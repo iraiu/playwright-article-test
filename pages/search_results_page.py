@@ -8,14 +8,9 @@ class SearchResultsPage(BasePage):
 
     def __init__(self, page: Page):
         super().__init__(page)
+        self.filter_sort = page.get_by_test_id("filter-sort")
+        self.results_loader = page.get_by_test_id("results-loader-track")
 
-    @property
-    def filter_sort(self):
-        return self.page.get_by_test_id("filter-sort")
-
-    @property
-    def results_loader(self):
-        return self.page.get_by_test_id("results-loader-track")
 
     def get_price_by_index(self, index: int = 1) -> float:
         price_element = self.page.get_by_test_id(
@@ -35,30 +30,14 @@ class SearchResultsPage(BasePage):
                 price = self.get_price_by_index(i)
                 if price > 0:
                     prices.append(price)
-            except:
+            except Exception:
                 break
         return prices
 
     def apply_filter(self, filter_type: str):
         self.filter_sort.select_option(filter_type)
         self.wait_for_results_loaded()
-        return self
 
     def wait_for_results_loaded(self):
         self.results_loader.wait_for(state="attached", timeout=5000)
-        self.results_loader.wait_for(state="hidden", timeout=30000)
-        return self
-
-    def are_prices_sorted_correctly(self, filter_type: str,
-                                    prices: List[float]) -> bool:
-        if len(prices) < 2:
-            return True
-
-        if filter_type == "price_asc":
-            return all(
-                prices[i] <= prices[i + 1] for i in range(len(prices) - 1))
-        elif filter_type == "price_desc":
-            return all(
-                prices[i] >= prices[i + 1] for i in range(len(prices) - 1))
-
-        return True
+        self.results_loader.wait_for(state="hidden")
