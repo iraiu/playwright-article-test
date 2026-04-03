@@ -1,7 +1,6 @@
 import re
 from pages.base_page import BasePage
 from playwright.sync_api import Page
-from typing import List
 
 
 class SearchResultsPage(BasePage):
@@ -23,15 +22,12 @@ class SearchResultsPage(BasePage):
             return float(match.group(1))
         return 0.0
 
-    def get_all_prices(self, count: int = 10) -> List[float]:
+    def get_all_prices(self, count: int = 10) -> list[float]:
         prices = []
         for i in range(1, count + 1):
-            try:
-                price = self.get_price_by_index(i)
-                if price > 0:
-                    prices.append(price)
-            except Exception:
-                break
+            price = self.get_price_by_index(i)
+            if price > 0:
+                prices.append(price)
         return prices
 
     def apply_filter(self, filter_type: str):

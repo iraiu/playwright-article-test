@@ -1,5 +1,5 @@
-from enum import Enum
+from enum import StrEnum
 
-class SortType(Enum):
+class SortType(StrEnum):
     PRICE_ASC = "price_asc"
     PRICE_DESC = "price_desc"
