@@ -1,0 +1,10 @@
+{
+  "base_url": "http://144.31.139.115:5000/",
+  "playwright": {
+    "headless": false,
+    "viewport": {"width": 1280, "height": 720},
+    "timeout": 30000
+  },
+  "browser": "chromium",
+  "slow_mo": 500
+}
